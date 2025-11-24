@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Just One Question</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffeef5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .box {
+            background: white;
+            width: 350px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+        button {
+            padding: 10px 18px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+        }
+        #yesBtn {
+            background: #ff4d6a;
+            color: white;
+        }
+        #noBtn {
+            background: #ddd;
+            color: #333;
+            position: relative;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            left: 0; top: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+            justify-content: center;
+            align-items: center;
+        }
+        .overlay-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Will you go out with me?</h2>
+    <p>I wanted to ask you in a small special way.</p>
+
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+</div>
+
+<div id="overlay">
+    <div class="overlay-box">
+        <h3>You said yes</h3>
+        <p>You just made my day. Next, I will show you our little plan.</p>
+        <button id="goPlanBtn">See our plan</button>
+    </div>
+</div>
+
+<script>
+    var noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseenter", function () {
+        noBtn.style.top = (Math.random() * 60 - 30) + "px";
+        noBtn.style.left = (Math.random() * 60 - 30) + "px";
+    });
+
+    document.getElementById("yesBtn").onclick = function () {
+        document.getElementById("overlay").style.display = "flex";
+    };
+
+    document.getElementById("goPlanBtn").onclick = function () {
+        // from ask_her_out folder, go to schedule folder
+        window.location.href = "../schedule/schedule.html";
+    };
+</script>
+
+</body>
+</html>

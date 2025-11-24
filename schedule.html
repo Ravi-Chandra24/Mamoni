@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date Schedule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {font-family: Arial, sans-serif; background:#fff4fa; padding:25px;}
+        .container {
+            max-width: 600px; margin:auto; padding:25px;
+            background:white; border-radius:15px;
+            box-shadow:0 0 20px rgba(0,0,0,0.15);
+        }
+        .step {padding:15px; background:#fff8fb; border-left:4px solid #ff4d6a; border-radius:8px; margin-bottom:20px;}
+        button {padding:8px 16px; border-radius:20px; border:none; cursor:pointer; font-weight:bold;}
+        .btn-primary {background:#ff4d6a; color:white;}
+        .btn-secondary {background:#ddd;}
+        #fullPlan {margin-top:25px; background:#f8f8f8; padding:20px; border-radius:10px; display:none;}
+        .timeline-item {margin-bottom:12px; padding-left:12px; border-left:3px solid #ff4d6a;}
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Our Date Plan</h2>
+    <p>This shows each stop one-by-one before the final timeline.</p>
+
+    <div id="stepBox" class="step"></div>
+
+    <div style="display:flex; justify-content:space-between;">
+        <button id="backBtn" class="btn-secondary">Back</button>
+        <button id="nextBtn" class="btn-primary">Next</button>
+    </div>
+
+    <div id="fullPlan">
+        <h3>Full Timeline</h3>
+        <div id="timeline"></div>
+    </div>
+</div>
+
+<script>
+var steps = [
+    {time:"4:00 pm", place:"Outside library", title:"First hello", note:"Just seeing you and starting slowly."},
+    {time:"4:30 pm", place:"Coffee shop", title:"Coffee time", note:"Talking and warming up the day."},
+    {time:"6:00 pm", place:"Dinner spot", title:"Dinner", note:"Quiet and slow dinner together."},
+    {time:"7:30 pm", place:"Walking path", title:"Evening walk", note:"Short relaxing walk to end the day."}
+];
+
+var idx = 0;
+var stepBox = document.getElementById("stepBox");
+var backBtn = document.getElementById("backBtn");
+var nextBtn = document.getElementById("nextBtn");
+var fullPlan = document.getElementById("fullPlan");
+var timeline = document.getElementById("timeline");
+
+function showStep() {
+    var s = steps[idx];
+    stepBox.innerHTML = `
+        <h3>${s.title}</h3>
+        <p><strong>Time:</strong> ${s.time}</p>
+        <p><strong>Place:</strong> ${s.place}</p>
+        <p>${s.note}</p>
+    `;
+    backBtn.disabled = idx === 0;
+    nextBtn.textContent = idx === steps.length-1 ? "Show full plan" : "Next";
+    fullPlan.style.display = "none";
+}
+
+nextBtn.onclick = function() {
+    if (idx < steps.length - 1) {
+        idx++;
+        showStep();
+    } else {
+        buildTimeline();
+        fullPlan.style.display = "block";
+    }
+};
+
+backBtn.onclick = function() {
+    if (idx > 0) {
+        idx--;
+        showStep();
+    }
+};
+
+function buildTimeline() {
+    timeline.innerHTML = "";
+    steps.forEach(function(s) {
+        timeline.innerHTML += `
+            <div class="timeline-item">
+                <strong>${s.time}</strong> — ${s.title} at ${s.place}<br>
+                <span style="color:#777">${s.note}</span>
+            </div>`;
+    });
+}
+
+showStep();
+</script>
+
+</body>
+</html>
