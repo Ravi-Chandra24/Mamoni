@@ -43,19 +43,19 @@ def run(cmd, check=True, capture=False):
 
 
 def inside_git_repo():
-    try:
-        run(["git", "rev-parse", "--is-inside-work-tree"])  # will exit on failure
-        return True
-    except SystemExit:
-        return False
+    # Use subprocess.run directly so we don't depend on run() calling sys.exit
+    p = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return p.returncode == 0
 
 
 def ensure_origin():
-    try:
-        url = run(["git", "remote", "get-url", "origin"], capture=True)
+    # Use subprocess.run to check for an existing origin without exiting the script
+    p = subprocess.run(["git", "remote", "get-url", "origin"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if p.returncode == 0:
+        url = p.stdout.decode().strip()
         print("origin remote configured:", url)
         return True
-    except SystemExit:
+    else:
         # Add origin using the SSH URL (user can change to HTTPS if desired)
         ssh_url = f"git@github.com:{REPO_OWNER}/{REPO_NAME}.git"
         print("No origin remote found. Adding origin ->", ssh_url)
