@@ -150,24 +150,18 @@
         var mainQuestion = document.getElementById("mainQuestion");
         var topName = document.getElementById("topName");
 
-        function clamp(v, a, b) {
-            return Math.max(a, Math.min(b, v));
-        }
-
+        // FAST NO BUTTON
         noBtn.addEventListener("mouseenter", function () {
-            var boxRect = box.getBoundingClientRect();
-            var btnRect = noBtn.getBoundingClientRect();
 
-            var minX = boxRect.left - btnRect.left + 8;
-            var maxX = boxRect.right - btnRect.right - 8;
-            var minY = boxRect.top - btnRect.top + 8;
-            var maxY = boxRect.bottom - btnRect.bottom - 8;
+            noBtn.style.transition = "transform 0.08s linear";
 
-            var dx = Math.random() * (maxX - minX) + minX;
-            var dy = Math.random() * (maxY - minY) + minY;
+            var minX = -150;  // bigger jumps
+            var maxX = 150;
+            var minY = -80;
+            var maxY = 80;
 
-            dx = clamp(dx, minX, maxX);
-            dy = clamp(dy, minY, maxY);
+            var dx = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+            var dy = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
 
             noBtn.style.transform = "translate(" + dx + "px, " + dy + "px)";
         });
