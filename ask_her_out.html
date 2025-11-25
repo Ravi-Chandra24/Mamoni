@@ -5,6 +5,7 @@
     <title>Will You Be My Oxytocin Receptor Gene?</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
@@ -13,6 +14,9 @@
         body {
             font-family: "Poppins", Arial, sans-serif;
             background: #e6f2ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
             overflow: hidden;
@@ -25,32 +29,71 @@
             border-radius: 18px;
             text-align: center;
             box-shadow: 0 12px 30px rgba(15,23,42,0.18);
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+        }
+
+        .decor-top {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #ff4d6a;
+        }
+
+        h2 {
+            font-family: "Playfair Display", serif;
+            margin: 0 0 8px 0;
+            font-size: 1.55rem;
+            color: #0f172a;
+        }
+
+        p {
+            margin: 0 0 16px 0;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+
+        .small-note {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
         #yesBtn {
             background: #2563eb;
             color: #fff;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(37,99,235,.55);
         }
 
-        /* NO BUTTON IS OUTSIDE THE BOX NOW */
+        #yesBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(37,99,235,.65);
+            background:#1d4ed8;
+        }
+
+        #noBtn {
+            background:#e5e7eb;
+            color:#374151;
+        }
+
+        #buttonRow {
+            position: relative;
+            height: 48px;
+            margin: 18px 0;
+            width: 100%;
+        }
+
+        #yesBtn,
         #noBtn {
             position: absolute;
-            top: 60%;
-            left: 50%;
-            background: #e5e7eb;
-            color: #374151;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transform: translate(-50%, -50%);
+            top: 0;
         }
 
         #goPlanBtn {
@@ -58,8 +101,16 @@
             color:#fff;
             padding:10px 20px;
             border-radius:25px;
-            display:none;
             cursor:pointer;
+            font-weight:600;
+            margin-top:10px;
+            box-shadow:0 8px 20px rgba(37,99,235,0.4);
+            display:none;
+        }
+
+        #goPlanBtn:hover {
+            transform:translateY(-1px);
+            background:#1d4ed8;
         }
     </style>
 </head>
@@ -67,34 +118,39 @@
 <body>
 
 <div class="box">
+
     <div class="decor-top" id="topName">アンネーシャ ラヴィチャンドラ❤️✨</div>
 
     <h2 id="mainQuestion">Will you be my oxytocin receptor gene?</h2>
 
-    <p id="introLine">You make everything feel softer and sweeter, just by being you.</p>
+    <p id="introLine">
+        You make everything feel a little softer, a little sweeter, just by being you.
+    </p>
 
     <div id="buttonRow">
-        <button id="yesBtn">❤️ Yes</button>
+        <button id="yesBtn" type="button">❤️ Yes</button>
+        <button id="noBtn" type="button">No</button>
     </div>
 
-    <p id="introNote">I know it’s cheesy but I mean it.</p>
+    <p id="introNote" class="small-note">
+        I know it’s cheesy but I really mean it.
+    </p>
 
-    <!-- final message -->
     <p id="yesMessage" style="display:none;">
         I knew you’d hit yes.<br>
         And from this moment on, I’m never letting your hand go.<br>
         I’m yours and you’re mine❤️.
     </p>
 
-    <button id="goPlanBtn">Now let me show you the plan I made for us</button>
+    <button id="goPlanBtn" type="button">
+        Now let me show you the plan I made for us
+    </button>
 </div>
-
-<button id="noBtn">No</button>
 
 <script>
 (function(){
-    var noBtn = document.getElementById("noBtn");
     var yesBtn = document.getElementById("yesBtn");
+    var noBtn = document.getElementById("noBtn");
     var buttonRow = document.getElementById("buttonRow");
     var introLine = document.getElementById("introLine");
     var introNote = document.getElementById("introNote");
@@ -103,34 +159,68 @@
     var mainQuestion = document.getElementById("mainQuestion");
     var topName = document.getElementById("topName");
 
-    // NO BUTTON — FULL SCREEN TELEPORT (NO LAG)
+    // initial positions inside the row
+    function setInitialPositions() {
+        var rowRect = buttonRow.getBoundingClientRect();
+        var rowWidth = rowRect.width;
+
+        var yesWidth = yesBtn.offsetWidth;
+        var noWidth  = noBtn.offsetWidth;
+
+        var gap = 16;
+        var totalWidth = yesWidth + gap + noWidth;
+
+        var startLeft = (rowWidth - totalWidth) / 2;
+
+        yesBtn.style.left = startLeft + "px";
+        noBtn.style.left  = (startLeft + yesWidth + gap) + "px";
+    }
+
+    window.addEventListener("load", setInitialPositions);
+    window.addEventListener("resize", setInitialPositions);
+
     noBtn.addEventListener("mouseenter", function(){
+        var rowRect = buttonRow.getBoundingClientRect();
+        var yesRect = yesBtn.getBoundingClientRect();
+        var btnRect = noBtn.getBoundingClientRect();
+
+        var rowWidth = rowRect.width;
+        var btnWidth = btnRect.width;
+
+        var safeMin = 0;
+        var safeMax = rowWidth - btnWidth;
+
+        var yesCenter = yesRect.left + yesRect.width / 2;
+        var safeDistance = yesRect.width; // keep at least one button-width away
+
+        var newLeft;
+        var tries = 0;
+
+        do {
+            newLeft = Math.random() * (safeMax - safeMin) + safeMin;
+            var newCenter = rowRect.left + newLeft + btnWidth / 2;
+            if (Math.abs(newCenter - yesCenter) >= safeDistance) break;
+            tries++;
+        } while (tries < 20);
+
         noBtn.style.transition = "none";
-
-        // random screen positions
-        var x = Math.random() * (window.innerWidth - 100);
-        var y = Math.random() * (window.innerHeight - 100);
-
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
+        noBtn.style.left = newLeft + "px";
     });
 
     yesBtn.addEventListener("click", function(){
-        noBtn.style.display = "none";
-        buttonRow.style.display = "none";
-        introLine.style.display = "none";
-        introNote.style.display = "none";
-        mainQuestion.style.display = "none";
-        topName.style.display = "none";
+        buttonRow.style.display="none";
+        introLine.style.display="none";
+        introNote.style.display="none";
+        mainQuestion.style.display="none";
+        topName.style.display="none";
 
-        yesMessage.style.display = "block";
-        goPlanBtn.style.display = "inline-block";
+        yesMessage.style.display="block";
+        goPlanBtn.style.display="inline-block";
     });
 
     goPlanBtn.addEventListener("click", function(){
-        window.location.href = "schedule.html?v=" + Date.now();
+        window.location.href = "schedule.html";
     });
-
 })();
 </script>
 
