@@ -6,7 +6,7 @@ set -euo pipefail
 # Usage: ./publish_all.sh [--use-https] [--enable-pages] [--no-push] [--message "msg"]
 
 OWNER="Ravi-Chandra24"
-REPO="Ask-her-Out"
+REPO="Mamoni"
 BRANCH="main"
 FILES=(index.html ask_her_out.html schedule.html git.py)
 COMMIT_MSG="Prepare site for GitHub Pages"
